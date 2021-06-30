@@ -25,6 +25,7 @@ const sortBy = (selectSortValue, hiddenInput, selectSearchValue, searchInput) =>
 }
 
 const sortByFilms = async (selectSortValue, hiddenInput, selectSearchValue, searchInput) => {
+    console.log(selectSortValue, hiddenInput, selectSearchValue, searchInput)
     const films = []
     if (hiddenInput === '0') {
         if (searchInput.length) {
@@ -51,13 +52,13 @@ const sortByFilms = async (selectSortValue, hiddenInput, selectSearchValue, sear
 
     } else {
         if (searchInput.length) {
-            if(selectSearchValue === selectSortValue){
+            if (selectSearchValue === selectSortValue) {
                 await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).get().then(querySnapshot => {
                     querySnapshot.forEach(doc => {
                         films.push(doc.data())
                     })
                 })
-            } else{
+            } else {
                 await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).orderBy(`fields.${selectSortValue}`, 'desc').get().then(querySnapshot => {
                     querySnapshot.forEach(doc => {
                         films.push(doc.data())
@@ -96,31 +97,45 @@ const searchBy = (type, input) => {
 
 const searchFilms = async (type, input) => {
     const films = []
-    await firebase.firestore().collection('films').where(`fields.${type}`, '==', input).get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-            films.push(doc.data())
+
+    if (type === 'pk') {
+        if (Number.isInteger(+input)) {
+            await firebase.firestore().collection('films').where(`${type}`, '==', Number(input)).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    films.push(doc.data())
+                })
+            })
+        }
+
+    } else {
+        await firebase.firestore().collection('films').where(`fields.${type}`, '==', input).get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                films.push(doc.data())
+            })
         })
-    })
+    }
+
 
     return films
 }
 
 const createBlocksIntoHTML = (films) => {
     wrapper.innerHTML = ''
-    const head = ['title', 'director', 'producer', 'edited']
+    const head = ['number', 'title', 'director', 'producer', 'edited']
     head.forEach(el => {
         const div = document.createElement('div')
         div.innerHTML = `<div class='head item'>
-        <button id=${el}>${el}</button>
-        <input type="hidden" value="0" id="input${el}">
+        <h2 id=${el}>${el}</h2>
         </div>`
         wrapper.append(div)
     })
 
     films.forEach(el => {
+        const { pk: number } = el
         const { fields } = el
+        // console.log(fields)
 
-        const array = [fields.title, fields.director, fields.producer, fields.edited]
+        const array = [number, fields.title, fields.director, fields.producer, fields.edited]
 
         array.forEach(el => {
             const div = document.createElement('div')
