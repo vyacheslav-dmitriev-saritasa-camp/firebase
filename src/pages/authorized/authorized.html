@@ -5,16 +5,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Authorized</title>
 </head>
 
 <body>
-    <button>Google auth</button>
+    <style>
+        body {
+            display: none;
+        }
+    </style>
+    <h1>
+        U r Authorized
+    </h1>
+    <button id="logOut">LogOut</button>
+
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="../../init-firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    <script src="./init-firebase.js"></script>
-    <script src="./login.js"></script>
+    <script src="./authorized.js"></script>
 </body>
 
 </html>

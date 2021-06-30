@@ -8,34 +8,50 @@
     <title>Document</title>
     <link rel="stylesheet" href="./normalize.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <div class="header-wrap">
             <div class="header__text">
-                Header
+                SW APP
             </div>
             <div class="header__login">
-                <a href="./login.html">Login</a>
-                <a href="./registration.html">Login</a>
+                <a href="./pages/login/login.html">Login</a>
+                <a href="./pages/registration/registration.html">Registration</a>
             </div>
         </div>
     </header>
     <main>
-        <div class="wrapper-form"> 
-            <input type="text" class="search">
-            <button id="search">Search by Producer</button>
-            <input type="hidden" value="0" id="hiddenInput">
-            <button id="sort">Sort by Producer</button>
+        <div class="wrapper-form">
+            <input type="text" class="search m-r5" id="search" placeholder="search">
+            <select id="selectSearch">
+                <option value="title">title</option>
+                <option value="director">director</option>
+                <option value="producer">producer</option>
+                <option value="edited">edited</option>
+            </select>
+            <button id="search" class="m-r10">Search</button>
+            <input type="hidden" value="0" id="hiddenInput" class="m-r10"> 
+            <select id="selectSort" class="m-r10">
+                <option value="title">title</option>
+                <option value="director">director</option>
+                <option value="producer">producer</option>
+                <option value="edited">edited</option>
+            </select>
+            <button id="sortBy">Sort</button>
         </div>
         <div class="wrapper">
-        </form>
+        </div>
     </main>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
     <script ype="text/javascript" src="./init-firebase.js"></script>
     <script src="./index.js"></script>
+    <script src="./init-firebase.js"></script>
 </body>
 </html>

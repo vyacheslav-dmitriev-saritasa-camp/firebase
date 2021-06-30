@@ -1,14 +1,86 @@
 const wrapper = document.querySelector('.wrapper')
 const searchButton = document.querySelector('button#search')
-const sortButton = document.querySelector('button#sort')
-const db = firebase.firestore()
+const sortByButton = document.querySelector('button#sortBy')
+
+sortByButton.addEventListener('click', () => {
+    const hiddenInput = document.querySelector('input#hiddenInput').value
+    const selectSortValue = document.querySelector('#selectSort').value
+
+    const searchInput = document.querySelector('#search').value
+    const selectSearchValue = document.querySelector('#selectSearch').value
+
+    if (hiddenInput === '0') {
+        sortBy(selectSortValue, hiddenInput, selectSearchValue, searchInput)
+        document.querySelector('input#hiddenInput').value = '1'
+    } else {
+        sortBy(selectSortValue, hiddenInput, selectSearchValue, searchInput)
+        document.querySelector('input#hiddenInput').value = '0'
+    }
+})
+
+const sortBy = (selectSortValue, hiddenInput, selectSearchValue, searchInput) => {
+    sortByFilms(selectSortValue, hiddenInput, selectSearchValue, searchInput).then(films => {
+        createBlocksIntoHTML(films)
+    })
+}
+
+const sortByFilms = async (selectSortValue, hiddenInput, selectSearchValue, searchInput) => {
+    const films = []
+    if (hiddenInput === '0') {
+        if (searchInput.length) {
+            if (selectSearchValue === selectSortValue) {
+                await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        films.push(doc.data())
+                    })
+                })
+            } else {
+                await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).orderBy(`fields.${selectSortValue}`).get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        films.push(doc.data())
+                    })
+                })
+            }
+        } else {
+            await firebase.firestore().collection('films').orderBy(`fields.${selectSortValue}`).get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    films.push(doc.data())
+                })
+            })
+        }
+
+    } else {
+        if (searchInput.length) {
+            if(selectSearchValue === selectSortValue){
+                await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        films.push(doc.data())
+                    })
+                })
+            } else{
+                await firebase.firestore().collection('films').where(`fields.${selectSearchValue}`, '==', searchInput).orderBy(`fields.${selectSortValue}`, 'desc').get().then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        films.push(doc.data())
+                    })
+                })
+            }
+
+        } else {
+            await firebase.firestore().collection('films').orderBy(`fields.${selectSortValue}`, 'desc').get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    films.push(doc.data())
+                })
+            })
+        }
+    }
+    return films
+}
 
 searchButton.addEventListener('click', () => {
-    const inputSearch = document.querySelector('input.search')
-    const input = inputSearch.value
-
-    if (input.length) {
-        searchByProducer(input)
+    const inputSearch = document.querySelector('input#search').value
+    const selectValue = document.querySelector('#selectSearch').value
+    if (inputSearch.length) {
+        searchBy(selectValue, inputSearch)
     } else {
         loadFilms().then(films => {
             createBlocksIntoHTML(films)
@@ -16,15 +88,15 @@ searchButton.addEventListener('click', () => {
     }
 })
 
-const searchByProducer = (input) => {
-    searchFilms(input).then(films => {
+const searchBy = (type, input) => {
+    searchFilms(type, input).then(films => {
         createBlocksIntoHTML(films)
     })
 }
 
-const searchFilms = async (input) => {
+const searchFilms = async (type, input) => {
     const films = []
-    await db.collection('films').where('fields.producer', '==', input).get().then(querySnapshot => {
+    await firebase.firestore().collection('films').where(`fields.${type}`, '==', input).get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
             films.push(doc.data())
         })
@@ -33,72 +105,35 @@ const searchFilms = async (input) => {
     return films
 }
 
-sortButton.addEventListener('click', () => {
-    const hiddenInput = document.querySelector('input#hiddenInput')
-    const input = hiddenInput.value
-
-    if (input === '0') {
-        sortByProducer(input)
-        document.querySelector('input#hiddenInput').value = '1'
-    } else {
-        sortByProducer(input)
-        document.querySelector('input#hiddenInput').value = '0'
-    }
-})
-
-const sortByProducer = (input) => {
-    sortFilms(input).then(films => {
-        createBlocksIntoHTML(films)
-    })
-}
-
-const sortFilms = async (input) => {
-    const films = []
-    if (input === '0') {
-        await db.collection('films').orderBy('fields.producer').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                films.push(doc.data())
-            })
-        })
-    } else {
-        await db.collection('films').orderBy('fields.producer', 'desc').get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                films.push(doc.data())
-            })
-        })
-    }
-
-    return films
-}
-
-const isAuth = localStorage.getItem('auth') || false
-
-if (isAuth) {
-    window.location.href = './authorized.html'
-}
-
 const createBlocksIntoHTML = (films) => {
     wrapper.innerHTML = ''
+    const head = ['title', 'director', 'producer', 'edited']
+    head.forEach(el => {
+        const div = document.createElement('div')
+        div.innerHTML = `<div class='head item'>
+        <button id=${el}>${el}</button>
+        <input type="hidden" value="0" id="input${el}">
+        </div>`
+        wrapper.append(div)
+    })
 
     films.forEach(el => {
         const { fields } = el
 
-        const div = document.createElement('div')
-        div.className = 'film'
-        div.innerHTML = `
-        <div class='d-flex text'><h2>Title:</h2>${fields.title}</div>
-        <div class='d-flex text'><h2>Director:</h2> ${fields.director}</div>
-        <div class='d-flex text'><h2>Producer:</h2>${fields.producer}</div>
-        <div class='d-flex text'><h2>Edited:</h2>${fields.edited}</div>
-        `
-        wrapper.append(div)
+        const array = [fields.title, fields.director, fields.producer, fields.edited]
+
+        array.forEach(el => {
+            const div = document.createElement('div')
+            div.innerHTML = `<div class='item'><h3>${el}</h3></div>`
+            wrapper.append(div)
+        })
     })
 }
 
 const loadFilms = async () => {
     const films = []
 
-    await db.collection('films').get().then(querySnapshot => {
+    await firebase.firestore().collection('films').get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
             films.push(doc.data())
         })
