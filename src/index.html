@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SW APP</title>
     <link rel="stylesheet" href="./normalize.css">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -28,21 +28,20 @@
     <main>
         <div class="wrapper-form">
             <input type="text" class="search m-r5" id="search" placeholder="search">
-            <select id="selectSearch">
+            <select id="selectSearch" class="m-r10">
                 <option value="pk">number</option>
-                <option value="title">title</option>
-                <option value="director">director</option>
-                <option value="producer">producer</option>
-                <option value="edited">edited</option>
+                <option value="fields.title">title</option>
+                <option value="fields.director">director</option>
+                <option value="fields.producer">producer</option>
+                <option value="fields.edited">edited</option>
             </select>
-            <button id="search" class="m-r10">Search</button>
-            <input type="hidden" value="0" id="hiddenInput" class="m-r10"> 
+            <input type="hidden" value="0" id="hiddenInput" class="m-r10">
             <select id="selectSort" class="m-r10">
                 <option value="pk">number</option>
-                <option value="title">title</option>
-                <option value="director">director</option>
-                <option value="producer">producer</option>
-                <option value="edited">edited</option>
+                <option value="fields.title">title</option>
+                <option value="fields.director">director</option>
+                <option value="fields.producer">producer</option>
+                <option value="fields.edited">edited</option>
             </select>
             <button id="sortBy">Sort</button>
         </div>
@@ -52,8 +51,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    <script ype="text/javascript" src="./init-firebase.js"></script>
-    <script src="./index.js"></script>
     <script src="./init-firebase.js"></script>
+    <script src="./check-auth.js"></script>
+    <script src="./getLoginStatus.js"></script>
+    <script src="./index.js"></script>
 </body>
+
 </html>

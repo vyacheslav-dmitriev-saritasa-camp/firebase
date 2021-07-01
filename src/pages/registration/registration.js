@@ -1,25 +1,38 @@
-const sendRegistration = document.querySelector('#sendRegistration')
+const sendRegistration = document.querySelector('#sendRegistration');
+
+function initialApp(){
+    const isAuth = getLoginStatus();
+
+    if(isAuth){
+        window.location.assign('http://127.0.0.1:5500/src/');
+    }
+}
+
+initialApp();
 
 sendRegistration.addEventListener('click', () => {
-    const login = document.querySelector('#login').value
-    const password = document.querySelector('#password').value
-    reg(login, password)
-})
+    const login = document.querySelector('#login').value;
+    const password = document.querySelector('#password').value;
 
+    reg(login, password);
+})
 
 const reg = async (login, password) => {
     try {
         await firebase.auth().createUserWithEmailAndPassword(login, password)
             .then(() => {
-                window.location.assign('http://127.0.0.1:5500/src/pages/authorized/authorized.html');
+                localStorage.setItem('auth', true);
+
+                window.location.assign('http://127.0.0.1:5500/src/');
             })
             .catch((e) => {
-                console.log(e)
-                document.querySelector('#login').value = ''
-                document.querySelector('#password').value = ''
+                localStorage.setItem('auth', false);
+
+                document.querySelector('#login').value = '';
+                document.querySelector('#password').value = '';
             })
     }
     catch (err) {
-        console.log(err)
+        localStorage.setItem('auth', false);
     }
 }
