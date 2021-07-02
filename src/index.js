@@ -1,402 +1,442 @@
-const wrapper = document.querySelector(".wrapper");
-const sortByButton = document.querySelector("button#sortBy");
-const input = document.querySelector("#search");
+const buttonSort = document.querySelector("#buttonSort");
+const inputSearch = document.querySelector("#inputSearch");
 const selectSearch = document.querySelector("#selectSearch");
 
 (() => {
-    const isAuth = getLoginStatus();
-    const headerLogin = document.querySelector(".header__login");
+	const isAuth = getLoginStatus();
+	const headerLogin = document.querySelector(".header__login");
 
-    if (isAuth) {
-        headerLogin.innerHTML = "";
-        const a = document.createElement("a");
-        a.innerHTML = `<a href='http://127.0.0.1:5500/src/pages/logout/logout.html'>Logout</a>`;
-        headerLogin.append(a);
+	if (isAuth) {
+		headerLogin.innerHTML = "";
 
-        loadFilms().then(films => {
-            createBlocksIntoHTML(isAuth, films);
-        });
-    } else {
-        headerLogin.innerHTML = "";
+		const a = document.createElement("a");
+		a.innerHTML = `<a href='http://127.0.0.1:5500/src/pages/logout/logout.html'>Logout</a>`;
 
-        const a = document.createElement("a");
+		headerLogin.append(a);
 
-        a.innerHTML = `
+		getFilms().then(films => {
+			createBlocksIntoHTML(isAuth, films);
+		});
+	} else {
+		headerLogin.innerHTML = "";
+
+		const a = document.createElement("a");
+		a.innerHTML = `
             <a href="./pages/login/login.html">Login</a>
             <a href="./pages/registration/registration.html">Registration</a>
         `;
 
-        headerLogin.append(a);
+		headerLogin.append(a);
 
-        loadFilms().then(films => {
-            createBlocksIntoHTML(isAuth, films);
-        });
-    }
+		getFilms().then(films => {
+			createBlocksIntoHTML(isAuth, films);
+		});
+	}
 })();
 
 function debounce(func, wait, immediate) {
-    let timeout;
+	let timeout;
 
-    return function () {
-        const context = this,
-            args = arguments;
-        clearTimeout(timeout);
+	return function () {
+		const context = this;
+		const args = arguments;
 
-        timeout = setTimeout(function () {
-            timeout = null;
+		clearTimeout(timeout);
 
-            if (!immediate) func.apply(context, args);
-        }, wait);
-        if (immediate && !timeout) {
-            func.apply(context, args);
-        }
-    };
+		timeout = setTimeout(function () {
+			timeout = null;
+
+			if (!immediate) {
+				func.apply(context, args);
+			}
+		}, wait);
+		if (immediate && !timeout) {
+			func.apply(context, args);
+		}
+	};
 }
 
 const myEfficientFn = debounce(function () {
-    const inputSearch = document.querySelector("input#search").value;
-    const selectSearchValue = document.querySelector("#selectSearch").value;
+	const inputSearchValue = document.querySelector("#inputSearch").value;
+	const selectSearchValue = document.querySelector("#selectSearch").value;
 
-    if (inputSearch.length) {
-        searchBy(selectSearchValue, inputSearch);
-    } else {
-        loadFilms().then(films => {
-            const isAuth = getLoginStatus();
+	if (inputSearchValue.length) {
+		searchBy(selectSearchValue, inputSearchValue);
+	} else {
+		getFilms().then(films => {
+			const isAuth = getLoginStatus();
 
-            createBlocksIntoHTML(isAuth, films);
-        });
-    }
+			createBlocksIntoHTML(isAuth, films);
+		});
+	}
 }, 250);
 
 selectSearch.addEventListener("change", () => {
-    myEfficientFn();
+	myEfficientFn();
 });
 
-input.addEventListener("input", () => {
-    myEfficientFn();
+inputSearch.addEventListener("input", () => {
+	myEfficientFn();
 });
 
-sortByButton.addEventListener("click", () => {
-    const hiddenInput = document.querySelector("input#hiddenInput").value;
-    const selectSortValue = document.querySelector("#selectSort").value;
+buttonSort.addEventListener("click", () => {
+	const hiddenInput = document.querySelector("#hiddenInput").value;
+	const selectSortValue = document.querySelector("#selectSort").value;
 
-    const searchInput = document.querySelector("#search").value;
-    const selectSearchValue = document.querySelector("#selectSearch").value;
+	const inputSearchValue = document.querySelector("#inputSearch").value;
+	const selectSearchValue = document.querySelector("#selectSearch").value;
 
-    if (hiddenInput === "0") {
-        sortBy(selectSortValue, hiddenInput, selectSearchValue, searchInput);
-        document.querySelector("input#hiddenInput").value = "1";
-    } else {
-        sortBy(selectSortValue, hiddenInput, selectSearchValue, searchInput);
-        document.querySelector("input#hiddenInput").value = "0";
-    }
+	if (hiddenInput === "0") {
+		sortBy(
+			selectSortValue,
+			hiddenInput,
+			selectSearchValue,
+			inputSearchValue
+		);
+
+		document.querySelector("#hiddenInput").value = "1";
+	} else {
+		sortBy(
+			selectSortValue,
+			hiddenInput,
+			selectSearchValue,
+			inputSearchValue
+		);
+
+		document.querySelector("#hiddenInput").value = "0";
+	}
 });
 
 const sortBy = (
-    selectSortValue,
-    hiddenInput,
-    selectSearchValue,
-    searchInput
+	selectSortValue,
+	hiddenInput,
+	selectSearchValue,
+	inputSearchValue
 ) => {
-    sortByFilms(
-        selectSortValue,
-        hiddenInput,
-        selectSearchValue,
-        searchInput
-    ).then(films => {
-        const isAuth = getLoginStatus();
+	sortByFilms(
+		selectSortValue,
+		hiddenInput,
+		selectSearchValue,
+		inputSearchValue
+	).then(films => {
+		const isAuth = getLoginStatus();
 
-        createBlocksIntoHTML(isAuth, films);
-    });
+		createBlocksIntoHTML(isAuth, films);
+	});
 };
 
 const sortByFilms = async (
-    selectSortValue,
-    hiddenInput,
-    selectSearchValue,
-    searchInput
+	selectSortValue,
+	hiddenInput,
+	selectSearchValue,
+	inputSearchValue
 ) => {
-    const films = [];
-    if (hiddenInput === "0") {
-        if (searchInput.length) {
-            if (selectSearchValue === "pk") {
-                if (Number.isInteger(+searchInput)) {
-                    await firebase
-                        .firestore()
-                        .collection("films")
-                        .where(selectSearchValue, "==", Number(searchInput))
-                        .get()
-                        .then(querySnapshot => {
-                            querySnapshot.forEach(doc => {
-                                films.push(doc.data());
-                            });
-                        });
+	const films = [];
+	if (hiddenInput === "0") {
+		if (inputSearchValue.length) {
+			if (selectSearchValue === "pk") {
+				if (Number.isInteger(+inputSearchValue)) {
+					await firebase
+						.firestore()
+						.collection("films")
+						.where(
+							selectSearchValue,
+							"==",
+							Number(inputSearchValue)
+						)
+						.get()
+						.then(querySnapshot => {
+							querySnapshot.forEach(doc => {
+								films.push(doc.data());
+							});
+						});
 
-                    const sortAr = films.sort((a, b) =>
-                        a.selectSortValue > b.selectSortValue ? 1 : -1
-                    );
+					const sortedFilms = films.sort((a, b) =>
+						a.selectSortValue > b.selectSortValue ? 1 : -1
+					);
 
-                    return sortAr;
-                }
-            } else {
-                await firebase
-                    .firestore()
-                    .collection("films")
-                    .where(selectSearchValue, ">=", searchInput)
-                    .where(selectSearchValue, "<=", searchInput + "\uf8ff")
-                    .get()
-                    .then(querySnapshot => {
-                        querySnapshot.forEach(doc => {
-                            films.push(doc.data());
-                        });
-                    });
+					return sortedFilms;
+				}
+			} else {
+				await firebase
+					.firestore()
+					.collection("films")
+					.where(selectSearchValue, ">=", inputSearchValue)
+					.where(selectSearchValue, "<=", inputSearchValue + "\uf8ff")
+					.get()
+					.then(querySnapshot => {
+						querySnapshot.forEach(doc => {
+							films.push(doc.data());
+						});
+					});
 
-                const sortAr = films.sort((a, b) =>
-                    a.selectSortValue > b.selectSortValue ? 1 : -1
-                );
+				const sortedFilms = films.sort((a, b) =>
+					a.selectSortValue > b.selectSortValue ? 1 : -1
+				);
 
-                return sortAr;
-            }
-        } else {
-            await firebase
-                .firestore()
-                .collection("films")
-                .orderBy(selectSortValue)
-                .get()
-                .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        films.push(doc.data());
-                    });
-                });
+				return sortedFilms;
+			}
+		} else {
+			await firebase
+				.firestore()
+				.collection("films")
+				.orderBy(selectSortValue)
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						films.push(doc.data());
+					});
+				});
 
-            return films;
-        }
-    } else {
-        if (searchInput.length) {
-            if (selectSearchValue === "pk") {
-                if (Number.isInteger(+searchInput)) {
-                    await firebase
-                        .firestore()
-                        .collection("films")
-                        .where(selectSearchValue, "==", Number(searchInput))
-                        .get()
-                        .then(querySnapshot => {
-                            querySnapshot.forEach(doc => {
-                                films.push(doc.data());
-                            });
-                        });
+			return films;
+		}
+	} else {
+		if (inputSearchValue.length) {
+			if (selectSearchValue === "pk") {
+				if (Number.isInteger(+inputSearchValue)) {
+					await firebase
+						.firestore()
+						.collection("films")
+						.where(
+							selectSearchValue,
+							"==",
+							Number(inputSearchValue)
+						)
+						.get()
+						.then(querySnapshot => {
+							querySnapshot.forEach(doc => {
+								films.push(doc.data());
+							});
+						});
 
-                    const sortAr = films.sort((a, b) =>
-                        a.selectSortValue > b.selectSortValue ? -1 : 1
-                    );
+					const sortedFilms = films.sort((a, b) =>
+						a.selectSortValue > b.selectSortValue ? -1 : 1
+					);
 
-                    return sortAr;
-                }
-            } else {
-                await firebase
-                    .firestore()
-                    .collection("films")
-                    .where(selectSearchValue, ">=", searchInput)
-                    .where(selectSearchValue, "<=", searchInput + "\uf8ff")
-                    .get()
-                    .then(querySnapshot => {
-                        querySnapshot.forEach(doc => {
-                            films.push(doc.data());
-                        });
-                    });
+					return sortedFilms;
+				}
+			} else {
+				await firebase
+					.firestore()
+					.collection("films")
+					.where(selectSearchValue, ">=", inputSearchValue)
+					.where(selectSearchValue, "<=", inputSearchValue + "\uf8ff")
+					.get()
+					.then(querySnapshot => {
+						querySnapshot.forEach(doc => {
+							films.push(doc.data());
+						});
+					});
 
-                const sortAr = films.sort((a, b) =>
-                    a.selectSortValue > b.selectSortValue ? -1 : 1
-                );
-                return sortAr;
-            }
-        } else {
-            await firebase
-                .firestore()
-                .collection("films")
-                .orderBy(selectSortValue, "desc")
-                .get()
-                .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        films.push(doc.data());
-                    });
-                });
-            return films;
-        }
-    }
+				const sortedFilms = films.sort((a, b) =>
+					a.selectSortValue > b.selectSortValue ? -1 : 1
+				);
+				return sortedFilms;
+			}
+		} else {
+			await firebase
+				.firestore()
+				.collection("films")
+				.orderBy(selectSortValue, "desc")
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						films.push(doc.data());
+					});
+				});
+			return films;
+		}
+	}
 };
 
-const searchBy = (selectSearchValue, inputSearch) => {
-    searchFilms(selectSearchValue, inputSearch).then(films => {
-        const isAuth = getLoginStatus();
+const searchBy = (selectSearchValue, inputSearchValue) => {
+	searchFilms(selectSearchValue, inputSearchValue).then(films => {
+		const isAuth = getLoginStatus();
 
-        createBlocksIntoHTML(isAuth, films);
-    });
+		createBlocksIntoHTML(isAuth, films);
+	});
 };
 
-const searchFilms = async (selectSearchValue, inputSearch) => {
-    const films = [];
+const searchFilms = async (selectSearchValue, inputSearchValue) => {
+	const films = [];
 
-    if (selectSearchValue === "pk") {
-        if (Number.isInteger(+inputSearch)) {
-            await firebase
-                .firestore()
-                .collection("films")
-                .where(selectSearchValue, "==", Number(inputSearch))
-                .get()
-                .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        films.push(doc.data());
-                    });
-                });
-        }
-    } else {
-        await firebase
-            .firestore()
-            .collection("films")
-            .where(selectSearchValue, ">=", inputSearch)
-            .where(selectSearchValue, "<=", inputSearch + "\uf8ff")
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    films.push(doc.data());
-                });
-            });
-    }
-    return films;
+	if (selectSearchValue === "pk") {
+		if (Number.isInteger(+inputSearchValue)) {
+			await firebase
+				.firestore()
+				.collection("films")
+				.where(selectSearchValue, "==", Number(inputSearchValue))
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						films.push(doc.data());
+					});
+				});
+		}
+	} else {
+		await firebase
+			.firestore()
+			.collection("films")
+			.where(selectSearchValue, ">=", inputSearchValue)
+			.where(selectSearchValue, "<=", inputSearchValue + "\uf8ff")
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					films.push(doc.data());
+				});
+			});
+	}
+	return films;
 };
 
 const createBlocksIntoHTML = (isAuth, films) => {
-    const list_element = document.querySelector("#list");
-    const pagination_element = document.querySelector("#pagination");
+	const list_element = document.querySelector("#list");
+	const pagination_element = document.querySelector("#pagination");
 
-    let rows = 2;
-    let pageNow = 1;
+	let rows = 2;
+	let pageNow = 1;
 
-    function DisplayList(isAuth, items, wrapper, rows_per_page, page) {
-        wrapper.innerHTML = "";
-        const head = ["number", "title", "director", "producer", "edited"];
+	function DisplayList(isAuth, items, wrapper, rows_per_page, page) {
+		wrapper.innerHTML = "";
+		const head = ["number", "title", "director", "producer", "edited"];
 
-        head.forEach(el => {
-            const div = document.createElement("div");
+		const listHead = document.createElement("div");
+		listHead.classList.add("list__heads");
 
-            div.innerHTML = `
-            <div class='head item'>
+		head.forEach(el => {
+			const div = document.createElement("div");
+			div.classList.add("head-item");
+
+			div.innerHTML = `
                 <h2 id=${el}>${el}</h2>
-            </div>`;
+            `;
 
-            wrapper.appendChild(div);
-        });
+			listHead.append(div);
+		});
 
-        page--;
+		wrapper.append(listHead);
 
-        let start = rows_per_page * page;
-        let end = start + rows_per_page;
-        let paginatedItems = items.slice(start, end);
+		page--;
 
-        for (let i = 0; i < paginatedItems.length; i++) {
-            let item = paginatedItems[i];
+		let start = rows_per_page * page;
+		let end = start + rows_per_page;
+		let paginatedItems = items.slice(start, end);
 
-            const { pk: number } = item;
-            const { fields } = item;
-            const array = [
-                number,
-                fields.title,
-                fields.director,
-                fields.producer,
-                fields.edited,
-            ];
-            array.forEach(el => {
-                if (isAuth && Number.isInteger(el)) {
-                    const div = document.createElement("div");
-                    div.innerHTML = `
-                <div class='item'>
-                    <h3>
-                        <a href='http://127.0.0.1:5500/src/pages/authorized/film-info.html?film-number=${el}' target='_blank'>${el}</a>
-                    </h3>
-                </div>`;
-                    wrapper.append(div);
-                } else {
-                    const div = document.createElement("div");
+		for (let i = 0; i < paginatedItems.length; i++) {
+			let item = paginatedItems[i];
 
-                    div.innerHTML = `
-                    <div class='item'>
+			const { pk: number } = item;
+			const { fields } = item;
+
+			const array = [
+				number,
+				fields.title,
+				fields.director,
+				fields.producer,
+				fields.edited,
+			];
+			const listItems = document.createElement("div");
+			listItems.classList.add("list__items");
+
+			array.forEach(el => {
+				if (isAuth && Number.isInteger(el)) {
+					const div = document.createElement("div");
+					div.classList.add("item");
+					div.innerHTML = `
+                        <h3>
+                            <a href='http://127.0.0.1:5500/src/pages/authorized/film-info.html?film-number=${el}' target='_blank'>${el}</a>
+                        </h3>
+                    `;
+
+					listItems.append(div);
+				} else {
+					const div = document.createElement("div");
+					div.classList.add("item");
+					div.innerHTML = `
                         <h3>${el}</h3>
-                    </div>`;
-                    wrapper.append(div);
-                }
-            });
-        }
-    }
+                    `;
 
-    function SetupPagination(isAuth, items, wrapper, rows_per_page) {
-        wrapper.innerHTML = "";
+					listItems.append(div);
+				}
+			});
+			wrapper.append(listItems);
+		}
+	}
 
-        let page_count = Math.ceil(items.length / rows_per_page);
+	function SetupPagination(isAuth, items, wrapper, rows_per_page) {
+		wrapper.innerHTML = "";
 
-        const prevButton = document.createElement("button");
-        const nextButton = document.createElement("button");
+		let page_count = Math.ceil(items.length / rows_per_page);
 
-        if (pageNow === 1) {
-            prevButton.disabled = true;
-        }
-        console.log(pageNow, page_count);
+		const prevButton = document.createElement("button");
+		const nextButton = document.createElement("button");
 
-        if (pageNow >= page_count) {
-            nextButton.disabled = true;
-        }
+		if (pageNow === 1) {
+			prevButton.disabled = true;
+		}
 
-        prevButton.addEventListener("click", () => {
-            if (pageNow > 1) {
-                pageNow--;
-                if (pageNow !== page_count) {
-                    nextButton.disabled = false;
-                }
-                DisplayList(isAuth, films, list_element, rows, pageNow);
-                if (pageNow === 1) {
-                    prevButton.disabled = true;
-                }
-            }
-        });
+		if (pageNow >= page_count) {
+			nextButton.disabled = true;
+		}
 
-        prevButton.innerText = "Prev";
-        prevButton.classList.add("pagination");
-        wrapper.append(prevButton);
+		prevButton.addEventListener("click", () => {
+			if (pageNow > 1) {
+				pageNow--;
 
-        nextButton.addEventListener("click", () => {
-            if (pageNow < page_count) {
-                if (pageNow === 1) {
-                    prevButton.disabled = false;
-                }
-                pageNow++;
-                DisplayList(isAuth, films, list_element, rows, pageNow);
-                if (pageNow === page_count) {
-                    nextButton.disabled = true;
-                }
-            }
-        });
+				if (pageNow !== page_count) {
+					nextButton.disabled = false;
+				}
 
-        nextButton.classList.add("pagination");
-        nextButton.innerText = "Next";
-        wrapper.append(nextButton);
-    }
+				DisplayList(isAuth, films, list_element, rows, pageNow);
 
-    DisplayList(isAuth, films, list_element, rows, pageNow);
-    SetupPagination(isAuth, films, pagination_element, rows);
+				if (pageNow === 1) {
+					prevButton.disabled = true;
+				}
+			}
+		});
+
+		prevButton.innerText = "Prev";
+		prevButton.classList.add("pagination");
+
+		wrapper.append(prevButton);
+
+		nextButton.addEventListener("click", () => {
+			if (pageNow < page_count) {
+				if (pageNow === 1) {
+					prevButton.disabled = false;
+				}
+
+				pageNow++;
+
+				DisplayList(isAuth, films, list_element, rows, pageNow);
+				if (pageNow === page_count) {
+					nextButton.disabled = true;
+				}
+			}
+		});
+
+		nextButton.classList.add("pagination");
+		nextButton.innerText = "Next";
+
+		wrapper.append(nextButton);
+	}
+
+	DisplayList(isAuth, films, list_element, rows, pageNow);
+	SetupPagination(isAuth, films, pagination_element, rows);
 };
 
-async function loadFilms() {
-    const films = [];
+async function getFilms() {
+	const films = [];
 
-    await firebase
-        .firestore()
-        .collection("films")
-        .get()
-        .then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                films.push(doc.data());
-            });
-        });
+	await firebase
+		.firestore()
+		.collection("films")
+		.get()
+		.then(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				films.push(doc.data());
+			});
+		});
 
-    return films;
+	return films;
 }
