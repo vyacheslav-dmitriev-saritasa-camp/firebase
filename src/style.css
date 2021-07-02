@@ -45,9 +45,14 @@ header {
     align-items: end;
 }
 
-button.pagination{
-    background-color: red;
+button.pagination {
+    background-color: rgb(199, 202, 207);
     margin: 5px;
+    padding: 5px;
+}
+
+button.notActive {
+    background-color: red;
 }
 
 .head {

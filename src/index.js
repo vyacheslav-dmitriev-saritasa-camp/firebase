@@ -3,7 +3,7 @@ const sortByButton = document.querySelector("button#sortBy");
 const input = document.querySelector("#search");
 const selectSearch = document.querySelector("#selectSearch");
 
-(function initialApp() {
+(() => {
     const isAuth = getLoginStatus();
     const headerLogin = document.querySelector(".header__login");
 
@@ -33,8 +33,6 @@ const selectSearch = document.querySelector("#selectSearch");
         });
     }
 })();
-
-// initialApp();
 
 function debounce(func, wait, immediate) {
     let timeout;
@@ -272,8 +270,8 @@ const createBlocksIntoHTML = (isAuth, films) => {
     const list_element = document.querySelector("#list");
     const pagination_element = document.querySelector("#pagination");
 
-    let current_page = 1;
-    let rows = 4;
+    let rows = 2;
+    let pageNow = 1;
 
     function DisplayList(isAuth, items, wrapper, rows_per_page, page) {
         wrapper.innerHTML = "";
@@ -298,7 +296,6 @@ const createBlocksIntoHTML = (isAuth, films) => {
 
         for (let i = 0; i < paginatedItems.length; i++) {
             let item = paginatedItems[i];
-            console.log(item);
 
             const { pk: number } = item;
             const { fields } = item;
@@ -336,37 +333,55 @@ const createBlocksIntoHTML = (isAuth, films) => {
         wrapper.innerHTML = "";
 
         let page_count = Math.ceil(items.length / rows_per_page);
-        for (let i = 1; i < page_count + 1; i++) {
-            let btn = PaginationButton(isAuth, i, items);
-            wrapper.appendChild(btn);
+
+        const prevButton = document.createElement("button");
+        const nextButton = document.createElement("button");
+
+        if (pageNow === 1) {
+            prevButton.disabled = true;
         }
-    }
+        console.log(pageNow, page_count);
 
-    function PaginationButton(isAuth, page, items) {
-        const button = document.createElement("button");
-
-        button.classList.add("pagination");
-
-        button.innerText = page;
-
-        if (current_page == page) {
-            button.classList.add("active");
+        if (pageNow >= page_count) {
+            nextButton.disabled = true;
         }
 
-        button.addEventListener("click", () => {
-            current_page = page;
-            DisplayList(isAuth, items, list_element, rows, current_page);
-
-            let current_btn = document.querySelector("button.active");
-            current_btn.classList.remove("active");
-
-            button.classList.add("active");
+        prevButton.addEventListener("click", () => {
+            if (pageNow > 1) {
+                pageNow--;
+                if (pageNow !== page_count) {
+                    nextButton.disabled = false;
+                }
+                DisplayList(isAuth, films, list_element, rows, pageNow);
+                if (pageNow === 1) {
+                    prevButton.disabled = true;
+                }
+            }
         });
 
-        return button;
+        prevButton.innerText = "Prev";
+        prevButton.classList.add("pagination");
+        wrapper.append(prevButton);
+
+        nextButton.addEventListener("click", () => {
+            if (pageNow < page_count) {
+                if (pageNow === 1) {
+                    prevButton.disabled = false;
+                }
+                pageNow++;
+                DisplayList(isAuth, films, list_element, rows, pageNow);
+                if (pageNow === page_count) {
+                    nextButton.disabled = true;
+                }
+            }
+        });
+
+        nextButton.classList.add("pagination");
+        nextButton.innerText = "Next";
+        wrapper.append(nextButton);
     }
 
-    DisplayList(isAuth, films, list_element, rows, current_page);
+    DisplayList(isAuth, films, list_element, rows, pageNow);
     SetupPagination(isAuth, films, pagination_element, rows);
 };
 
