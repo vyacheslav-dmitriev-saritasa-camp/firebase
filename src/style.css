@@ -1,14 +1,10 @@
-*{
-    font-family: 'Open Sans', sans-serif;
-}
-
-header{
+header {
     height: 70px;
     background-color: rgb(227, 228, 222);
     margin: 0 0 30px 0;
 }
 
-.header-wrap{
+.header-wrap {
     width: 80%;
     height: 100%;
     max-width: 1200px;
@@ -19,18 +15,19 @@ header{
     padding: 0 20px;
 }
 
-.header__text{
+.header__text {
     font-size: 20px;
 }
 
-.header__login{
+.header__login {
     font-size: 20px;
 }
-.header__login a:nth-child(1){
+
+.header__login a:nth-child(1) {
     margin: 0 10px 0 0;
 }
 
-.wrapper{
+.wrapper {
     width: 80%;
     height: 100%;
     max-width: 1200px;
@@ -40,31 +37,28 @@ header{
     align-items: end;
 }
 
-
-
-.head{
-    border-top: 2px solid black;;
+.head {
+    border-top: 2px solid black;
     background-color: rgb(187, 179, 179);
     font-size: 18px;
 }
 
-.item{
+.item {
     text-align: left;
     padding: 10px;
     border-bottom: 2px solid black;
     margin: 10px 0;
 }
 
-
-h2{
+h2 {
     font-size: 18px;
 }
 
-h3{
+h3 {
     font-size: 16px;
 }
 
-.film{
+.film {
     padding: 10px;
     font-size: 16px;
     width: 25%;
@@ -72,18 +66,17 @@ h3{
     min-height: 350px;
     background-color: orange;
     margin: 10px;
-
 }
 
-.d-flex{
+.d-flex {
     display: flex;
 }
 
-.d-flex.text{
+.d-flex.text {
     margin: 10px 0 0 0;
 }
 
-.wrapper-form{
+.wrapper-form {
     width: 80%;
     height: 100%;
     max-width: 1200px;
@@ -94,11 +87,12 @@ h3{
     flex-wrap: wrap;
 }
 
-input.search{
+input.search {
     border: 1px solid rgba(114, 114, 114, 0.7);
     padding: 5px;
     border-radius: 5px;
 }
+
 /* 
 button#search{
     margin: 0 5px;
@@ -112,11 +106,10 @@ button#sort{
     padding: 2px;
 } */
 
-
-
-.m-r5{
-    margin-right: 5px
+.m-r5 {
+    margin-right: 5px;
 }
-.m-r10{
-    margin-right: 10px
+
+.m-r10 {
+    margin-right: 10px;
 }

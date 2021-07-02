@@ -1,0 +1,25 @@
+.wrapper {
+    width: 80%;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.box {
+    width: 100%;
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border: 3px solid black;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.item {
+    margin: 20px;
+    line-height: 1.3;
+}
