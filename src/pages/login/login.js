@@ -1,27 +1,17 @@
-const sendLogin = document.querySelector("#sendLoginButton");
+const sendLoginButton = document.querySelector("#sendLoginButton");
 
+/**
+ * The function checks is auth user or is not. if he is - he is redirecting to home page.
+ */
 firebase.auth().onAuthStateChanged(user => {
 	if (user) {
-        window.location.assign("../index/index.html");
+		window.location.assign("../index/index.html");
 	}
 });
 
-sendLogin.addEventListener("click", async () => {
+sendLoginButton.addEventListener("click", () => {
 	const login = document.querySelector("#login").value;
 	const password = document.querySelector("#password").value;
 
-	try {
-		await firebase
-			.auth()
-			.signInWithEmailAndPassword(login, password)
-			.then(() => {
-				window.location.assign("../index/index.html");
-			})
-			.catch(e => {
-				document.querySelector("#login").value = "";
-				document.querySelector("#password").value = "";
-			});
-	} catch (e) {
-		console.log(e)
-	}
+	loginForm(login, password);
 });

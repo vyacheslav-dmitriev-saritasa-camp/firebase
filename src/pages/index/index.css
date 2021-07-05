@@ -30,18 +30,6 @@ main {
 	padding: 50px 0 0 0;
 }
 
-.wrapper {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	width: 80%;
-	max-width: 1200px;
-	height: 100%;
-	padding: 20px;
-	margin: 0 auto;
-}
-
 .form {
 	display: flex;
 	justify-content: flex-end;
@@ -130,20 +118,4 @@ button.pagination {
 
 button.pagination:disabled {
 	cursor: not-allowed;
-}
-
-h2 {
-	font-size: 18px;
-}
-
-h3 {
-	font-size: 16px;
-}
-
-.m-r5 {
-	margin-right: 5px;
-}
-
-.m-r10 {
-	margin-right: 10px;
 }

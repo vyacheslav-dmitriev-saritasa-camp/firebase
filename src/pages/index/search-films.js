@@ -1,4 +1,10 @@
-const searchFilms = async (selectSearchValue, inputSearchValue) => {
+/**
+ * The function searches films by data and sends array with films back.
+ * @param {string} selectSearchValue - The data from selectSearch.
+ * @param {string} inputSearchValue - The data from inputSearch.
+ * @returns The array with films.
+ */
+async function searchFilms(selectSearchValue, inputSearchValue) {
 	const films = [];
 
 	if (selectSearchValue === "pk") {
@@ -27,5 +33,6 @@ const searchFilms = async (selectSearchValue, inputSearchValue) => {
 				});
 			});
 	}
+
 	return films;
-};
+}

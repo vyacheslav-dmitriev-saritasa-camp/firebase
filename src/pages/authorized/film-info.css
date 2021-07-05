@@ -1,16 +1,7 @@
-.wrapper {
-	display: flex;
-	align-items: center;
-	width: 80%;
-	max-width: 1200px;
-	height: 100%;
-	margin: 0 auto;
-}
-
 .box {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: flex-start;
 	width: 100%;
 	min-height: 40vh;

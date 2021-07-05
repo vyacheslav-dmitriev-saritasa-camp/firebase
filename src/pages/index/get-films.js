@@ -1,3 +1,7 @@
+/**
+ * The function gets array with films from firebase.
+ * @returns the function returns an array with films.
+ */
 async function getFilms() {
 	const films = [];
 

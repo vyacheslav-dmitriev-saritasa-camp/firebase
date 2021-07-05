@@ -2,8 +2,14 @@ const buttonSort = document.querySelector("#buttonSort");
 const inputSearch = document.querySelector("#inputSearch");
 const selectSearch = document.querySelector("#selectSearch");
 
+/**
+ * The function which will be called after n-time
+ */
 const startDebounce = debounce(searchBySearchedValue, 250);
 
+/**
+ * The function checks is auth user or is not and call the function initApp with difference values = true or false
+ */
 firebase.auth().onAuthStateChanged(user => {
 	if (user) {
 		initApp(true);
@@ -21,16 +27,16 @@ inputSearch.addEventListener("input", () => {
 });
 
 buttonSort.addEventListener("click", () => {
-	const inputHidden = +document.querySelector("#inputHidden").value;
+	const inputHiddenValue = +document.querySelector("#inputHidden").value;
 	const selectSortValue = document.querySelector("#selectSort").value;
 
 	const inputSearchValue = document.querySelector("#inputSearch").value;
 	const selectSearchValue = document.querySelector("#selectSearch").value;
 
-	if (inputHidden === 0) {
+	if (inputHiddenValue === 0) {
 		createSortedFilms(
 			selectSortValue,
-			inputHidden,
+			inputHiddenValue,
 			selectSearchValue,
 			inputSearchValue
 		);
@@ -39,7 +45,7 @@ buttonSort.addEventListener("click", () => {
 	} else {
 		createSortedFilms(
 			selectSortValue,
-			inputHidden,
+			inputHiddenValue,
 			selectSearchValue,
 			inputSearchValue
 		);
@@ -47,4 +53,3 @@ buttonSort.addEventListener("click", () => {
 		document.querySelector("#inputHidden").value = 0;
 	}
 });
-

@@ -1,11 +1,19 @@
+/**
+ * The function sorts films by data and return the array with films.
+ * @param {string} selectSortValue - The data from the selectSort.
+ * @param {number} inputHiddenValue - The data from the inputHidden.
+ * @param {string} selectSearchValue - The data from the selectSearch.
+ * @param {string} inputSearchValue - The data from the inputSearch.
+ * @returns array with sortedFilms or just films if data is not valid.
+ */
 async function sortFilms(
 	selectSortValue,
-	inputHidden,
+	inputHiddenValue,
 	selectSearchValue,
 	inputSearchValue
 ) {
 	const films = [];
-	if (inputHidden === 0) {
+	if (inputHiddenValue === 0) {
 		if (inputSearchValue.length) {
 			if (selectSearchValue === "pk") {
 				if (Number.isInteger(+inputSearchValue)) {
@@ -108,6 +116,7 @@ async function sortFilms(
 				const sortedFilms = films.sort((a, b) =>
 					a[`${selectSortValue}`] > b[`${selectSortValue}`] ? -1 : 1
 				);
+
 				return sortedFilms;
 			}
 		} else {
@@ -121,6 +130,7 @@ async function sortFilms(
 						films.push(doc.data());
 					});
 				});
+
 			return films;
 		}
 	}

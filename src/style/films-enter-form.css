@@ -1,23 +1,19 @@
-.wrapper {
+.box {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	width: 80%;
-	max-width: 1200px;
-	height: 100%;
-	margin: 0 auto;
-}
-
-.form {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
 	justify-content: center;
 	min-height: 50vh;
 	border: 2px solid black;
 	border-radius: 5px;
 	padding: 20px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 input.item {

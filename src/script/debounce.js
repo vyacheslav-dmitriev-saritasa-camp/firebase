@@ -1,4 +1,10 @@
-function debounce(func, wait, immediate) {
+/**
+ * The function which waits n-time for call main function.
+ * @param {function} func - The function for calling after wait-ms.
+ * @param {number} wait - The time after which the function will be called.
+ * @returns function which is ready to call.
+ */
+function debounce(func, wait) {
 	let timeout;
 
 	return function () {
@@ -10,12 +16,7 @@ function debounce(func, wait, immediate) {
 		timeout = setTimeout(function () {
 			timeout = null;
 
-			if (!immediate) {
-				func.apply(context, args);
-			}
-		}, wait);
-		if (immediate && !timeout) {
 			func.apply(context, args);
-		}
+		}, wait);
 	};
 }

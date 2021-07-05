@@ -1,3 +1,8 @@
+/**
+ * The functions creates header, film's table with pagination. 
+ * @param {boolean} isAuth - The param for checking user is auth or isn't. If he is auth - into the header will be text 'Logout' with logic for it.
+ *                           If he is not - into the header will be text 'Login' / 'Registration' with logic for it.
+ */
 function initApp(isAuth) {
 	const headerList = document.querySelector(".header__list");
 
