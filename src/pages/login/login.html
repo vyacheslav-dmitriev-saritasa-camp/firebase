@@ -5,10 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Login</title>
-		<link rel="stylesheet" href="../../normalize.css" />
-		<link rel="stylesheet" href="./login.css" />
+		<link rel="stylesheet" href="../../style/normalize.css" />
+		<link rel="stylesheet" href="././../../style/films-form.css" />
 	</head>
-
 	<body>
 		<div class="wrapper">
 			<div class="box">
@@ -26,7 +25,7 @@
 						class="item"
 					/>
 				</form>
-				<button type="button" id="sendLogin" class="item">Login</button>
+				<button type="button" id="sendLoginButton" class="item">Login</button>
 				<div class="item">
 					<span>Don't have an account yet?</span>
 					<a
@@ -40,9 +39,7 @@
 		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-		<script src="../../init-firebase.js"></script>
-		<script src="http://127.0.0.1:5500/src/set-auth-state.js"></script>
-		<script src="../../get-login-status.js"></script>
+		<script src="../../base/init-firebase.js"></script>
 		<script src="./login.js"></script>
 	</body>
 </html>

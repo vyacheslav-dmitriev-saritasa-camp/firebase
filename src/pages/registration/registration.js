@@ -1,36 +1,31 @@
-const sendRegistration = document.querySelector("#sendRegistration");
+const sendRegistration = document.querySelector("#sendRegistrationButton");
 
-(() => {
-	const isAuth = getLoginStatus();
-	if (isAuth) {
-		window.location.assign("http://127.0.0.1:5500/src/");
-	}
-})();
+firebase.auth().onAuthStateChanged(user => {
+	if (user) {
+        window.location.assign("../index/index.html");
+	} 
+});
 
 sendRegistration.addEventListener("click", () => {
 	const login = document.querySelector("#login").value;
 	const password = document.querySelector("#password").value;
 
-	reg(login, password);
+	registration(login, password);
 });
 
-const reg = async (login, password) => {
+const registration = async (login, password) => {
 	try {
 		await firebase
 			.auth()
 			.createUserWithEmailAndPassword(login, password)
 			.then(() => {
-				localStorage.setItem("auth", true);
-
-				window.location.assign("http://127.0.0.1:5500/src/");
+				window.location.assign("../index/index.html");
 			})
 			.catch(e => {
-				localStorage.setItem("auth", false);
-
 				document.querySelector("#login").value = "";
 				document.querySelector("#password").value = "";
 			});
 	} catch (err) {
-		localStorage.setItem("auth", false);
+		console.log(e)
 	}
 };

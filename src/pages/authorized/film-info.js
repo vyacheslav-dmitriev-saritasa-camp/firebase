@@ -30,14 +30,12 @@ async function getFilmInfo() {
 	createFilmInfoHTML(film[0]);
 }
 
-function initApp() {
-	const isAuth = JSON.parse(localStorage.getItem("auth")) || false;
-	if (isAuth) {
+firebase.auth().onAuthStateChanged(user => {
+	if (user) {
 		getFilmInfo();
 	} else {
 		window.location.assign(
-			"http://127.0.0.1:5500/src/pages/login/login.html"
+			"../login/login.html"
 		);
 	}
-}
-initApp();
+});

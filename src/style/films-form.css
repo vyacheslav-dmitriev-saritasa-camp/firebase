@@ -1,27 +1,23 @@
 .wrapper {
-	width: 80%;
-	height: 100%;
-	max-width: 1200px;
-	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	width: 80%;
+	max-width: 1200px;
+	height: 100%;
+	margin: 0 auto;
 }
 
 .form {
-	min-height: 50vh;
-	border-radius: 10px;
-	border: 2px solid black;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
+	min-height: 50vh;
+	border: 2px solid black;
+	border-radius: 5px;
 	padding: 20px;
-}
-
-.item {
-	margin: 10px;
 }
 
 input.item {
@@ -39,4 +35,8 @@ a:focus,
 button:hover,
 a:hover {
 	color: green;
+}
+
+.item {
+	margin: 10px;
 }

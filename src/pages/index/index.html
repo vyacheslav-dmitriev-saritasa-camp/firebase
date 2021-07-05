@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SW APP</title>
+		<link rel="stylesheet" href="../../style/normalize.css" />
+		<link rel="stylesheet" href="./index.css" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<header>
+			<div class="header-wrap">
+				<div class="header__logo">
+					<a href="./index.html">SW APP</a>
+				</div>
+				<div class="header__list"></div>
+			</div>
+		</header>
+		<main>
+			<div class="wrapper">
+				<div class="form">
+					<input
+						type="text"
+						class="search m-r5"
+						id="inputSearch"
+						placeholder="search"
+					/>
+					<select id="selectSearch" class="m-r10">
+						<option value="pk">number</option>
+						<option value="fields.title">title</option>
+						<option value="fields.director">director</option>
+						<option value="fields.producer">producer</option>
+						<option value="fields.edited">edited</option>
+					</select>
+					<input
+						type="hidden"
+						value="0"
+						id="inputHidden"
+						class="m-r10"
+					/>
+					<select id="selectSort" class="m-r10">
+						<option value="pk">number</option>
+						<option value="fields.title">title</option>
+						<option value="fields.director">director</option>
+						<option value="fields.producer">producer</option>
+						<option value="fields.edited">edited</option>
+					</select>
+					<button id="buttonSort">Sort</button>
+				</div>
+				<div class="table">
+					<div class="list" id="list"></div>
+					<div class="pagination-box" id="pagination"></div>
+				</div>
+			</div>
+		</main>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+		<script src="../../base/init-firebase.js"></script>
+        <script src="./init-app.js"></script>
+        <script src="../../script/check-auth.js"></script>
+		<script src="../../script/debounce.js"></script>
+		<script src="./search-films.js"></script>
+		<script src="./create-searched-films.js"></script>
+		<script src="./create-table-html.js"></script>
+		<script src="./get-films.js"></script>
+        <script src="./search-by-searched-value.js"></script>
+        <script src="./create-sorted-films.js"></script>
+        <script src="./sort-films.js"></script>
+		<script src="./index.js"></script>
+	</body>
+</html>

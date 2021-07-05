@@ -1,11 +1,10 @@
-const sendLogin = document.querySelector("#sendLogin");
+const sendLogin = document.querySelector("#sendLoginButton");
 
-(() => {
-	const isAuth = getLoginStatus();
-	if (isAuth) {
-		window.location.assign("http://127.0.0.1:5500/src/");
+firebase.auth().onAuthStateChanged(user => {
+	if (user) {
+        window.location.assign("../index/index.html");
 	}
-})();
+});
 
 sendLogin.addEventListener("click", async () => {
 	const login = document.querySelector("#login").value;
@@ -16,15 +15,13 @@ sendLogin.addEventListener("click", async () => {
 			.auth()
 			.signInWithEmailAndPassword(login, password)
 			.then(() => {
-				localStorage.setItem("auth", true);
-				window.location.assign("http://127.0.0.1:5500/src/");
+				window.location.assign("../index/index.html");
 			})
 			.catch(e => {
-				localStorage.setItem("auth", false);
 				document.querySelector("#login").value = "";
 				document.querySelector("#password").value = "";
 			});
 	} catch (e) {
-		localStorage.setItem("auth", false);
+		console.log(e)
 	}
 });
