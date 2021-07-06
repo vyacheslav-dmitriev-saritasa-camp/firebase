@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login</title>
+		<link rel="stylesheet" href="../../style/normalize.css" />
+		<link rel="stylesheet" href="../../style/global.css" />
+		<link rel="stylesheet" href="././../../style/films-enter-form.css" />
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="box">
+				<form class="form">
+					<input
+						type="text"
+						placeholder="login"
+						id="login"
+						class="item"
+					/>
+					<input
+						type="password"
+						placeholder="password"
+						id="password"
+						class="item"
+					/>
+				</form>
+				<button type="button" id="sendLoginButton" class="item enter">
+					Login
+				</button>
+				<div class="item">
+					<span>Don't have an account yet?</span>
+					<a
+						href="http://127.0.0.1:5500/src/pages/registration/registration.html"
+					>
+						Register
+					</a>
+				</div>
+			</div>
+		</div>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+		<script src="../../base/init-firebase.js"></script>
+		<script src="./login-form.js"></script>
+		<script src="./login.js"></script>
+	</body>
+</html>

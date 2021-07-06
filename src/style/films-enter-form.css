@@ -1,0 +1,38 @@
+.box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 50vh;
+	border: 2px solid black;
+	border-radius: 5px;
+	padding: 20px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+input.item {
+	border: 2px solid black;
+	border-radius: 3px;
+	padding: 5px;
+}
+
+input.item:focus {
+	border: 2px dashed green;
+}
+
+button:focus,
+a:focus,
+button:hover,
+a:hover {
+	color: green;
+}
+
+.item {
+	margin: 10px;
+}
